@@ -1,0 +1,988 @@
+%% HARDEN v4.0 — Rapport Mini Projet Shell
+%% ENSET Mohammedia — Université Hassan II de Casablanca
+%% Module : Théorie des Systèmes d'Exploitation & SE Windows/Unix/Linux
+%% ============================================================
+\documentclass[12pt,a4paper]{article}
+
+%% -- Encodage & langue (pdfLaTeX : UTF-8 + T1)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+
+%% -- Mise en page ---------------------------------------------
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{parskip}        % espace entre paragraphes, pas d'indentation
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+%% -- Polices --------------------------------------------------
+\usepackage{microtype}
+
+%% -- Couleurs -------------------------------------------------
+\usepackage[table,xcdraw]{xcolor}
+\definecolor{bleuENSET}{HTML}{1F4E79}
+\definecolor{bleuMed}{HTML}{2E75B6}
+\definecolor{bleuClair}{HTML}{D6E4F0}
+\definecolor{bleuHeader}{HTML}{BDD7EE}
+\definecolor{grisTexte}{HTML}{595959}
+\definecolor{grisLt}{HTML}{F2F2F2}
+\definecolor{rouge}{HTML}{C00000}
+\definecolor{vert}{HTML}{1D7044}
+\definecolor{orange}{HTML}{C55A11}
+\definecolor{codeBg}{HTML}{EFF3FA}
+\definecolor{codeBorder}{HTML}{2E75B6}
+\definecolor{codeText}{HTML}{1F3864}
+
+%% -- Titres ---------------------------------------------------
+\usepackage[explicit]{titlesec}
+\titleformat{\section}
+  {\large\bfseries\color{white}}
+  {}
+  {0pt}
+  {\colorbox{bleuENSET}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\thesection\quad #1}}}
+  [\vspace{2pt}]
+
+%% Format pour les sections NON numérotées (\section*) — ex. titre de la TDM
+\titleformat{name=\section,numberless}
+  {\large\bfseries\color{white}}
+  {}
+  {0pt}
+  {\colorbox{bleuENSET}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{#1}}}
+  [\vspace{2pt}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{bleuENSET}}
+  {\thesubsection}
+  {0.5em}
+  {#1}
+  [\vspace{-4pt}\textcolor{bleuMed}{\rule{\linewidth}{1pt}}]
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{bleuMed}}
+  {\thesubsubsection}
+  {0.5em}
+  {#1}
+
+\titlespacing*{\section}{0pt}{16pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{8pt}{2pt}
+
+%% -- En-têtes / pieds de page ---------------------------------
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{\small\textcolor{bleuMed}{\textbf{HARDEN v4.0}} }
+\fancyhead[R]{\small\textcolor{grisTexte}{ENSET Mohammedia --- 2025/2026}}
+\fancyfoot[L]{\small\textcolor{grisTexte}{Module : Th\'{e}orie des SE \& SE Windows/Unix/Linux}}
+\fancyfoot[R]{\small\textcolor{grisTexte}{Page \thepage\ / \pageref{LastPage}}}
+\usepackage{lastpage}
+
+%% -- Tableaux -------------------------------------------------
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+%% colortbl est déjà chargé par xcolor[table] — pas besoin de le recharger
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\renewcommand{\arraystretch}{1.35}
+
+%% -- Listes ---------------------------------------------------
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.5em, topsep=3pt, itemsep=2pt}
+\setlist[enumerate]{leftmargin=1.5em, topsep=3pt, itemsep=2pt}
+
+%% -- Code source ----------------------------------------------
+\usepackage{listings}
+\usepackage{lstautogobble}
+\lstset{
+  backgroundcolor=\color{codeBg},
+  basicstyle=\ttfamily\small\color{codeText},
+  breaklines=true,
+  breakatwhitespace=false,
+  frame=leftline,
+  framerule=3pt,
+  rulecolor=\color{codeBorder},
+  xleftmargin=12pt,
+  xrightmargin=4pt,
+  aboveskip=8pt,
+  belowskip=8pt,
+  showstringspaces=false,
+  autogobble=true,
+  tabsize=4,
+  numbers=none,
+  extendedchars=true,
+  %% Mapping des caractères accentués français pour lstlisting + pdflatex
+  literate=
+    {é}{{\'{e}}}1 {è}{{\`{e}}}1 {ê}{{\^{e}}}1 {ë}{{\"e}}1
+    {à}{{\`{a}}}1 {â}{{\^{a}}}1 {ä}{{\"a}}1
+    {ù}{{\`{u}}}1 {û}{{\^{u}}}1 {ü}{{\"u}}1
+    {ô}{{\^{o}}}1 {ö}{{\"o}}1
+    {î}{{\^{i}}}1 {ï}{{\"i}}1
+    {ç}{{\c{c}}}1
+    {É}{{\'{E}}}1 {È}{{\`{E}}}1 {Ê}{{\^{E}}}1
+    {À}{{\`{A}}}1 {Â}{{\^{A}}}1
+    {Ù}{{\`{U}}}1 {Û}{{\^{U}}}1
+    {Ô}{{\^{O}}}1 {Î}{{\^{I}}}1
+    {Ç}{{\c{C}}}1
+    {«}{{\guillemotleft}}1 {»}{{\guillemotright}}1,
+}
+\lstdefinestyle{bash}{
+  language=bash,
+  keywordstyle=\color{bleuMed}\bfseries,
+  stringstyle=\color{vert},
+  commentstyle=\color{grisTexte}\itshape,
+  morekeywords={find,grep,awk,sed,cut,chmod,chown,sha256sum,gcc,sudo,time,stat,getcap,setcap,waitpid,pthread\_create,pthread\_join,execl,fork,uname,mount,crontab},
+}
+\lstdefinestyle{c}{
+  language=C,
+  keywordstyle=\color{bleuMed}\bfseries,
+  stringstyle=\color{vert},
+  commentstyle=\color{grisTexte}\itshape,
+}
+\lstdefinestyle{inline}{
+  basicstyle=\ttfamily\small\color{codeText},
+  backgroundcolor=\color{codeBg},
+  frame=none,
+  xleftmargin=0pt,
+  aboveskip=0pt,
+  belowskip=0pt,
+}
+
+%% -- Boîtes colorées ------------------------------------------
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{infobox}{
+  colback=bleuClair, colframe=bleuMed,
+  leftrule=4pt, rightrule=0.4pt, toprule=0.4pt, bottomrule=0.4pt,
+  arc=2pt, boxsep=4pt,
+  fontupper=\small\itshape\color{bleuENSET},
+  breakable,
+}
+
+\newtcolorbox{capturebox}[1]{
+  colback=grisLt, colframe=bleuMed,
+  leftrule=0.4pt, rightrule=0.4pt, toprule=0.4pt, bottomrule=0.4pt,
+  arc=2pt, boxsep=8pt,
+  title={\small\bfseries\color{bleuMed} Capture d'écran},
+  fontupper=\small\itshape\color{grisTexte},
+  breakable,
+  label={#1},
+}
+
+\newtcolorbox{pointsbox}{
+  colback=bleuClair, colframe=bleuENSET,
+  arc=4pt, boxsep=6pt,
+  title={\bfseries\color{white} Points forts du projet},
+  coltitle=white, attach boxed title to top center,
+  boxed title style={colback=bleuENSET, arc=2pt},
+  breakable,
+}
+
+%% -- Graphiques / images --------------------------------------
+\usepackage{graphicx}
+\usepackage{float}
+
+%% -- Maths ---------------------------------------------------
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%% -- Liens (hyperref doit être chargé en dernier) -------------
+\usepackage[colorlinks=true, linkcolor=bleuMed, urlcolor=bleuMed, citecolor=bleuMed]{hyperref}
+
+%% -- Commandes personnalisées ---------------------------------
+\newcommand{\opt}[1]{\texttt{\textcolor{bleuMed}{\textbf{#1}}}}
+\newcommand{\cmd}[1]{\texttt{\textcolor{codeText}{#1}}}
+\newcommand{\fichier}[1]{\texttt{\textcolor{bleuENSET}{#1}}}
+\newcommand{\niveau}[2]{\textcolor{#1}{\textbf{#2}}}
+
+%% -------------------------------------------------------------
+%% DOCUMENT
+%% -------------------------------------------------------------
+\begin{document}
+
+%% ==============================================================
+%% PAGE DE GARDE
+%% ==============================================================
+\thispagestyle{empty}
+
+\begin{center}
+  % -- Logo -----------------------------------------------------
+  \includegraphics[width=6cm]{LOGO_ENSET-removebg-preview.png} \\[1cm]
+
+  % -- Université -----------------------------------------------
+  {\large\bfseries\color{bleuENSET} UNIVERSITÉ HASSAN II DE CASABLANCA} \\[0.2cm]
+  {\large\bfseries\color{bleuENSET} École Normale Supérieure de l'Enseignement Technique} \\[0.2cm]
+  {\large\bfseries\color{bleuENSET} Mohammedia} \\[2cm]
+
+  % -- Titre Box ------------------------------------------------
+  \begin{tcolorbox}[
+    enhanced,
+    colback=bleuENSET,
+    colframe=bleuENSET,
+    arc=8pt,
+    boxrule=0pt,
+    width=0.98\linewidth,
+    halign=center,
+    shadow={4pt}{-4pt}{0pt}{black!25!white},
+    drop fuzzy shadow
+  ]
+    \vspace{0.4cm}
+    {\fontsize{46}{52}\selectfont\bfseries\color{white} HARDEN v4.0} \\[0.6cm]
+    {\Large\itshape\color{bleuHeader} Linux Audit, Hardening \& Remediation Suite}
+    \vspace{0.4cm}
+  \end{tcolorbox}
+
+  \vspace{1.5cm}
+
+  % -- Type de document -----------------------------------------
+  {\Large\bfseries\color{bleuENSET} COMPTE RENDU --- MINI PROJET SHELL} \\[1.5cm]
+
+  % -- Informations ---------------------------------------------
+  \renewcommand{\arraystretch}{1.6}
+  \begin{tabular}{L{5cm} L{9cm}}
+    \rowcolor{bleuClair}
+    \textbf{\color{bleuENSET}Module}         & Théorie des Systèmes d'Exploitation \& Linux \\
+    \textbf{\color{bleuENSET}Encadrant}      & ENSET Mohammedia \\
+    \rowcolor{bleuClair}
+    \textbf{\color{bleuENSET}TeamID}         & \underline{\hspace{6cm}} \\
+    \textbf{\color{bleuENSET}Membres}        & \underline{\hspace{6cm}} \\
+    \rowcolor{bleuClair}
+                                             & \underline{\hspace{6cm}} \\
+    \textbf{\color{bleuENSET}Date}           & 14/05/2026 \\
+    \rowcolor{bleuClair}
+    \textbf{\color{bleuENSET}Version script} & 4.0 (14-05-2026) \\
+  \end{tabular}
+
+  \vfill
+  % -- Bas de page ----------------------------------------------
+  {\large\bfseries\color{grisTexte} Année Universitaire 2025-2026}
+\end{center}
+
+
+
+\newpage
+
+%% ==============================================================
+%% TABLE DES MATIÈRES
+%% ==============================================================
+\tableofcontents
+\newpage
+
+%% ==============================================================
+\section{Introduction et besoin identifié}
+%% ==============================================================
+
+\subsection{Contexte général}
+
+Dans le domaine de l'administration système Linux, la sécurité des serveurs et postes de travail est une préoccupation permanente. Les attaques par élévation de privilèges, les mauvaises configurations et les binaires vulnérables constituent des vecteurs d'attaque fréquemment exploités par des acteurs malveillants.
+
+La détection manuelle de ces risques est longue, sujette aux erreurs humaines et difficilement reproductible à grande échelle. L'automatisation de ces tâches d'audit représente donc un enjeu majeur pour toute organisation soucieuse de sa posture de sécurité.
+
+\subsection{Besoin identifié}
+
+\textbf{HARDEN} est un outil d'audit et de durcissement (\textit{hardening}) de sécurité Linux développé en Bash. Il automatise la détection des risques d'élévation de privilèges, des mauvaises configurations et des vulnérabilités courantes sur les systèmes Unix/Linux.
+
+L'outil répond à un besoin réel des administrateurs système, des équipes de sécurité (Blue Team / Red Team) et des ingénieurs DevSecOps qui doivent effectuer des audits réguliers sur un ou plusieurs systèmes Linux.
+
+\subsection{Objectifs du script}
+
+\begin{itemize}[topsep=2pt, itemsep=2pt]
+  \item Détecter automatiquement les binaires SUID vulnérables référencés dans GTFOBins
+  \item Identifier les règles sudo dangereuses (NOPASSWD, wildcards)
+  \item Analyser les tâches cron, les fichiers mal configurés et les clés SSH exposées
+  \item Vérifier la configuration SSH, les capacités kernel et les permissions Docker
+  \item Générer des logs horodatés avec des recommandations de correction (\cmd{Fix:})
+  \item Supporter plusieurs modes d'exécution : normal, subshell, fork réel (C/\cmd{fork()}) et thread réel (C/pthreads)
+  \item Fournir des fonctionnalités avancées : baseline SHA-256, auto-remédiation, export JSON, banner grabbing, analyse CVE kernel
+\end{itemize}
+
+\subsection{Public cible}
+
+L'outil s'adresse principalement aux :
+\begin{itemize}[topsep=2pt, itemsep=2pt]
+  \item Administrateurs système Linux et ingénieurs DevSecOps
+  \item Équipes de sécurité (Blue Team pour l'audit défensif, Red Team pour l'identification de failles)
+  \item Auditeurs de sécurité souhaitant automatiser les contrôles de conformité
+  \item Étudiants souhaitant comprendre et renforcer la posture de sécurité d'un système Linux
+\end{itemize}
+
+\subsection{Architecture générale}
+
+HARDEN est structuré autour d'un script principal Bash (\fichier{harden.sh}) et de deux helpers C compilés dynamiquement dans un répertoire sécurisé :
+
+\begin{itemize}[topsep=2pt, itemsep=2pt]
+  \item \fichier{fork\_helper.c} --- Implémente le vrai appel système \cmd{fork()} pour le mode \opt{-f} (background réel).
+  \item \fichier{thread\_helper.c} --- Utilise les POSIX threads (\cmd{pthread\_create/join}) pour le mode \opt{-t}.
+\end{itemize}
+
+L'architecture repose sur des mesures de sécurité internes robustes :
+\begin{itemize}[topsep=2pt, itemsep=2pt]
+  \item \textbf{Gestion des logs} : Utilisation de \cmd{flock} sur \fichier{history.log} pour éviter les race conditions en mode concurrent.
+  \item \textbf{Isolation du Build} : Utilisation de \cmd{mktemp -d} pour \cmd{BUILD\_DIR} afin de prévenir les attaques par lien symbolique.
+  \item \textbf{Nettoyage automatique} : Un \cmd{trap '...' EXIT} garantit la suppression des fichiers temporaires à la fin du script.
+  \item \textbf{Codes d'erreur standardisés} : Gestion des erreurs via des codes spécifiques (100--105).
+\end{itemize}
+
+L'architecture des fonctions de scan est modulaire :
+
+\begin{lstlisting}[style=bash]
+./harden [options] <repertoire>
+  -c  --> quick_scan()    # 7 checks essentiels
+  -C  --> full_scan()     # 20 checks complets
+  -s  --> ( full_scan )   # sous-shell isole
+  -t  --> thread_helper "cmd1" "cmd2"  # Thread1=checks 1-11 / Thread2=12-20
+  -f  --> fork_helper "$0 _real_fork_target" &  # fork reel
+\end{lstlisting}
+
+Cette architecture en deux couches (Bash + C) respecte la directive du cahier des charges sur l'utilisation de \textit{«~scripts complémentaires en langage C~»}.
+
+\newpage
+
+%% ==============================================================
+\section{Fonctionnalités implémentées}
+%% ==============================================================
+
+\subsection{Syntaxe d'utilisation}
+
+Le script HARDEN respecte la syntaxe standard des commandes Linux (directive §3.2.4) :
+
+\begin{lstlisting}[style=bash]
+./harden.sh [OPTIONS] <répertoire>
+\end{lstlisting}
+
+Le paramètre \texttt{<répertoire>} est \textbf{obligatoire} pour les modes de scan (\opt{-c}, \opt{-C}, \opt{-t}, \opt{-s}, \opt{-f}). Il représente le répertoire cible sur lequel les vérifications sont effectuées.
+
+\subsection{Options disponibles}
+
+Le script implémente les options suivantes, conformément aux directives §3.2.2 du cahier des charges :
+
+\vspace{6pt}
+\begin{longtable}{C{1.6cm} L{2.4cm} L{9.8cm}}
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}Option} & \textbf{\color{white}Nom} & \textbf{\color{white}Description} \\
+  \endfirsthead
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}Option} & \textbf{\color{white}Nom} & \textbf{\color{white}Description} \\
+  \endhead
+  \rowcolor{white}
+  \opt{-h}       & Help            & Affiche la documentation complète (usage, options, codes d'erreur, exemples) \\
+  \rowcolor{grisLt}
+  \opt{-c}       & Quick scan      & Scan rapide (\textbf{7} vérifications essentielles) sur le répertoire cible \\
+  \rowcolor{white}
+  \opt{-C}       & Full scan       & Scan complet (\textbf{20} vérifications) via \cmd{full\_scan()} sur le répertoire cible \\
+  \rowcolor{grisLt}
+  \opt{-t}       & Thread          & Exécution parallèle via de vrais POSIX threads (C helper compilé avec pthread) \\
+  \rowcolor{white}
+  \opt{-s}       & Subshell        & Exécute le scan dans un sous-shell isolé via \cmd{( full\_scan )} \\
+  \rowcolor{grisLt}
+  \opt{-f}       & Fork            & Exécution concurrente (Père scanne Dir1, Fils scanne Dir2) via \cmd{fork()} réel (C helper). Le fils tourne en arrière-plan (\cmd{disown}) et silencieusement. \\
+  \rowcolor{white}
+  \opt{-l DIR}   & Log directory   & Spécifie un répertoire personnalisé pour le fichier \fichier{history.log} \\
+  \rowcolor{grisLt}
+  \opt{-r}       & Restore         & Réinitialise les paramètres par défaut --- nécessite root (\cmd{\$EUID=0}) \\
+  \rowcolor{white}
+  \opt{-n}       & Dry-run         & Simulation : aucun log écrit sur disque (compteurs actifs en mémoire) \\
+  \rowcolor{grisLt}
+  \opt{-v}       & Verbose         & Active le mode verbeux pour afficher des détails supplémentaires \\
+  \rowcolor{white}
+  \opt{-V}       & Version         & Affiche la version du programme et quitte \\
+  \rowcolor{grisLt}
+  \opt{-a}       & Auto-remediation & Extrait du log et applique automatiquement les corrections (\cmd{Fix:}) \\
+  \rowcolor{white}
+  \opt{-b store} & Baseline store  & Calcule et enregistre les hash SHA-256 des fichiers critiques \\
+  \rowcolor{grisLt}
+  \opt{-b check} & Baseline check  & Compare l'état actuel aux hash stockés pour détecter les modifications \\
+  \rowcolor{white}
+  \opt{-B}       & Banner grab     & Récupère les bannières des ports 22, 80, 443 via socket Python \\
+  \rowcolor{grisLt}
+  \opt{-k}       & Kernel CVE      & Analyse hors-ligne le noyau pour identifier les CVE connus \\
+  \rowcolor{white}
+  \opt{-j}       & JSON export     & Exporte \fichier{history.log} en JSON structuré via Python \\
+\end{longtable}
+
+\begin{infobox}
+\textbf{Note :} Les options \opt{-t}, \opt{-s}, \opt{-f} et \opt{-c}/\opt{-C} requièrent un \texttt{\textless{}répertoire\textgreater{}} cible. Les options \opt{-a}, \opt{-b}, \opt{-B}, \opt{-k}, \opt{-j} sont des actions autonomes sans répertoire requis.
+\end{infobox}
+
+\subsection{Vérifications de sécurité --- \cmd{full\_scan} (20 checks)}
+
+Le scan complet (\opt{-C}) exécute \textbf{20 vérifications} via \cmd{full\_scan()}. Le scan rapide (\opt{-c}) via \cmd{quick\_scan()} en exécute 7. En mode \opt{-t}, les checks 1--11 s'exécutent dans le Thread~1, les checks 12--20 dans le Thread~2 :
+
+\vspace{6pt}
+\begin{longtable}{C{0.7cm} L{3.8cm} L{9.3cm}}
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}\#} & \textbf{\color{white}Fonction} & \textbf{\color{white}Description} \\
+  \endfirsthead
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}\#} & \textbf{\color{white}Fonction} & \textbf{\color{white}Description} \\
+  \endhead
+  \rowcolor{white}
+  1  & \cmd{check\_suid}              & Binaires SUID inconnus dans \cmd{\$TARGET} (Audit localisé) \\
+  \rowcolor{grisLt}
+  2  & \cmd{check\_suid\_vulnerable}  & SUID vulnérables (GTFOBins) --- Scan \cmd{find /} système-complet \\
+  \rowcolor{white}
+  3  & \cmd{check\_sudo}              & Permissions sudo via \cmd{sudo -n -l} (Système-complet) \\
+  \rowcolor{grisLt}
+  4  & \cmd{check\_sudo\_nopasswd}    & Règles NOPASSWD dans \fichier{/etc/sudoers*} (Système-complet) \\
+  \rowcolor{white}
+  5  & \cmd{check\_cron}              & Tâches cron de l'utilisateur courant (Système-complet) \\
+  \rowcolor{grisLt}
+  6  & \cmd{check\_cron\_paths}       & PATH non sécurisés dans les tâches cron (Système-complet) \\
+  \rowcolor{white}
+  7  & \cmd{check\_passwd}            & Permissions de \fichier{/etc/passwd} (doit être 644) (Système-complet) \\
+  \rowcolor{grisLt}
+  8  & \cmd{check\_root\_users}       & Comptes non-root avec UID 0 (Système-complet) \\
+  \rowcolor{white}
+  9  & \cmd{check\_empty\_passwords}  & Hash vide dans \fichier{/etc/shadow} (Système-complet) \\
+  \rowcolor{grisLt}
+  10 & \cmd{check\_env}               & Variables dangereuses (\cmd{\$PATH='.', \$LD\_PRELOAD}) (Système-complet) \\
+  \rowcolor{white}
+  11 & \cmd{check\_ssh}               & Clés SSH privées exposées dans \cmd{\$TARGET} (Audit localisé) \\
+  \rowcolor{grisLt}
+  12 & \cmd{check\_ssh\_config}       & \fichier{sshd\_config} (PermitRootLogin, etc.) (Système-complet) \\
+  \rowcolor{white}
+  13 & \cmd{check\_permissions}       & Fichiers world-writable dans \cmd{\$TARGET} (Audit localisé) \\
+  \rowcolor{grisLt}
+  14 & \cmd{check\_world\_writable\_dirs} & \fichier{/tmp}, \fichier{/var/tmp}, \fichier{/dev/shm} (Système-complet) \\
+  \rowcolor{white}
+  15 & \cmd{check\_unowned\_files}    & Fichiers sans propriétaire (Système-complet) \\
+  \rowcolor{grisLt}
+  16 & \cmd{check\_writable\_binaries}& Binaires modifiables dans \fichier{/bin /sbin /usr/bin} (Système-complet) \\
+  \rowcolor{white}
+  17 & \cmd{check\_tmp\_mounts}       & Options de montage \cmd{noexec}, \cmd{nosuid} sur \fichier{/tmp} (Système-complet) \\
+  \rowcolor{grisLt}
+  18 & \cmd{check\_kernel\_version}   & Version du noyau courant (Système-complet) \\
+  \rowcolor{white}
+  19 & \cmd{check\_capabilities}      & Capacités Linux sur les binaires (\cmd{getcap -r /}) (Système-complet) \\
+  \rowcolor{grisLt}
+  20 & \cmd{check\_docker\_socket}    & Permissions de \fichier{/var/run/docker.sock} (Système-complet) \\
+\end{longtable}
+
+\begin{infobox}
+\textbf{Actions autonomes} (hors \cmd{full\_scan}) : \opt{-a} auto-remédiation, \opt{-b store/check} baseline SHA-256 --- invoquées indépendamment, pas lors d'un scan.
+\end{infobox}
+
+\subsection{Gestion des logs}
+
+Toutes les sorties sont simultanément affichées dans le terminal (codes couleur ANSI) et enregistrées dans \fichier{history.log} après stripping des couleurs via \cmd{sed}. Le format respecte strictement la directive \S{}3.2.2 :
+
+\begin{lstlisting}[style=bash]
+yyyy-mm-dd-hh-mm-ss : username : INFOS/WARNING/CRITICAL : message
+\end{lstlisting}
+
+\textbf{Améliorations techniques du logging :}
+\begin{itemize}
+  \item \textbf{Concurrence sécurisée} : Utilisation de \cmd{flock} sur le fichier log pour garantir l'intégrité des données lors d'exécutions parallèles (Thread/Fork).
+  \item \textbf{Traçabilité Fork} : Les messages du processus fils sont tagués \texttt{[FORK:PID=...]} pour une identification claire.
+  \item \textbf{Compteurs persistants} : Les compteurs d'incidents sont toujours incrémentés, même en mode dry-run (\opt{-n}).
+\end{itemize}
+
+L'emplacement du fichier log s'adapte automatiquement selon les privilèges :
+
+\begin{itemize}
+  \item \textbf{root :} \fichier{/var/log/harden/history.log}
+  \item \textbf{non-root :} \fichier{\textasciitilde/.harden/history.log}
+  \item \textbf{option} \opt{-l DIR} \textbf{:} répertoire personnalisé spécifié par l'utilisateur
+\end{itemize}
+
+\begin{capturebox}{cap:logs1}
+Contenu du fichier \fichier{history.log} après un scan complet --- niveaux INFOS / WARNING / CRITICAL
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:logs2}
+Affichage coloré dans le terminal --- codes couleur ANSI verts, jaunes, rouges
+\end{capturebox}
+
+\subsection{Helpers C compilés à la volée}
+
+Conformément à la directive §3.2.2 permettant des \textit{«~scripts complémentaires en langage C~»}, HARDEN utilise deux helpers C compilés automatiquement avec \cmd{gcc} :
+
+\subsubsection{fork\_helper.c --- mode \opt{-f}}
+
+Ce helper implémente un vrai appel système \cmd{fork()} (via la fonction POSIX \texttt{fork(2)}). Le processus parent lance le fils et continue son exécution, tandis que le fils s'exécute en arrière-plan (\cmd{disown}) avec une redirection silencieuse de ses sorties standards.
+
+\begin{lstlisting}[style=c]
+pid_t pid = fork();
+if (pid == 0) {
+    execl("/bin/sh", "sh", "-c", argv[1], NULL);
+} else {
+    int status;
+    waitpid(pid, &status, 0);
+}
+\end{lstlisting}
+
+\subsubsection{thread\_helper.c --- mode \opt{-t}}
+
+Ce helper crée de vrais POSIX threads via \cmd{pthread\_create()} avec \cmd{libpthread}. Les deux threads reçoivent des \textbf{commandes distinctes} (argv[1] et argv[2]) pour un vrai découpage fonctionnel, puis \cmd{pthread\_join()} synchronise leur fin.
+
+\begin{lstlisting}[style=c]
+// thread_helper.c : 2 commandes distinctes
+typedef struct { char *command; } thread_data_t;
+int main(int argc, char *argv[]) {
+    pthread_t threads[2];
+    thread_data_t data[2];
+    data[0].command = argv[1]; /* Thread 1 : checks 1-11 */
+    data[1].command = argv[2]; /* Thread 2 : checks 12-20 */
+    pthread_create(&threads[0], NULL, run_command, &data[0]);
+    pthread_create(&threads[1], NULL, run_command, &data[1]);
+    pthread_join(threads[0], NULL);
+    pthread_join(threads[1], NULL);
+    return 0;
+}
+\end{lstlisting}
+
+\subsection{Concepts shell implémentés}
+
+Conformément à la directive §3.2.2, le script incorpore les concepts suivants :
+
+\vspace{6pt}
+\begin{longtable}{L{4.2cm} L{9.8cm}}
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}Concept shell} & \textbf{\color{white}Implémentation dans HARDEN} \\
+  \endfirsthead
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}Concept shell} & \textbf{\color{white}Implémentation dans HARDEN} \\
+  \endhead
+  \rowcolor{white}
+  Conditions (\cmd{if/else}, \cmd{[[]]}) & Vérification \cmd{\$EUID}, tests \cmd{-f/-d/-w}, comparaisons de permissions \\
+  \rowcolor{grisLt}
+  Boucles (\cmd{while read}, \cmd{for}) & \cmd{while read -r file} (find/grep), \cmd{for vuln in "\$\{vulnerable[@]\}"} \\
+  \rowcolor{white}
+  Fonctions modulaires & 30+ fonctions : \cmd{check\_*}, \cmd{log\_*}, \cmd{quick\_scan}, \cmd{full\_scan}, \cmd{thread\_mode}, etc. \\
+  \rowcolor{grisLt}
+  Variables d'environnement & Contrôle de \cmd{\$PATH} (contient '.'), \cmd{\$LD\_PRELOAD}, \cmd{\$HOME}, \cmd{\$EUID} \\
+  \rowcolor{white}
+  Expressions régulières & \cmd{grep -E}, \cmd{=\textasciitilde} pour la version kernel, patterns Bash dans \cmd{getopts} \\
+  \rowcolor{grisLt}
+  Manipulation de fichiers & \cmd{find}, \cmd{stat -c \%a}, \cmd{chmod}, \cmd{sha256sum}, \cmd{mkdir -p} \\
+  \rowcolor{white}
+  Contrôle d'accès & \cmd{require\_root()} avec \cmd{EUID=0}, whitelist binaires SUID protégés \\
+  \rowcolor{grisLt}
+  Pipes et filtres & \cmd{find | while read}, \cmd{grep | awk '\{print \$1\}'}, \cmd{sed}, \cmd{cut}, \cmd{sort -u} \\
+  \rowcolor{white}
+  Sous-shells \cmd{()} & \cmd{( full\_scan )} pour le mode \opt{-s}, isolation de l'environnement \\
+  \rowcolor{grisLt}
+  Processus fils (fork) & \fichier{fork\_helper.c} compilé par \cmd{gcc} dans \fichier{/tmp}, simple \cmd{\&} \\
+  \rowcolor{white}
+  Threads POSIX & \fichier{thread\_helper.c} compilé avec \cmd{-lpthread}, 2 threads avec tâches distinctes \\
+  \rowcolor{grisLt}
+  Scripts C complémentaires & \fichier{fork\_helper.c} et \fichier{thread\_helper.c} générés et compilés automatiquement \\
+\end{longtable}
+
+\subsection{Sécurité interne du script}
+
+Le script HARDEN v4.0 intègre des mécanismes d'auto-protection pour garantir son intégrité et sa robustesse :
+
+\begin{itemize}
+  \item \textbf{Protection contre les liens symboliques} : Le répertoire de compilation \cmd{BUILD\_DIR} est créé via \cmd{mktemp -d}, garantissant un nom imprévisible et des permissions restreintes dans \fichier{/tmp}.
+  \item \textbf{Sûreté de l'auto-remédiation} : L'utilisation de \cmd{eval} a été proscrite. Les commandes sont analysées et filtrées via une whitelist stricte (\cmd{chmod}/\cmd{chown}).
+  \item \textbf{Protection des binaires système} : Une liste d'exclusion (\cmd{PROTECTED\_BINS}) empêche toute modification accidentelle ou malveillante des binaires de sécurité vitaux (\cmd{sudo}, \cmd{passwd}, etc.).
+  \item \textbf{Exécution non-interactive} : L'utilisation de \opt{sudo -n} dans les tests de privilèges évite tout blocage du script en attente d'une saisie utilisateur.
+  \item \textbf{Verrouillage atomique} : Le recours à \cmd{flock} pour les écritures dans le journal prévient toute corruption du fichier \fichier{history.log} lors d'accès concurrents.
+\end{itemize}
+
+\newpage
+
+%% ==============================================================
+\section{Tests et exécutions}
+%% ==============================================================
+
+\begin{infobox}
+Conformément à la directive §3.2.4, les quatre modes d'exécution ont été testés avec la commande \cmd{time} sur trois scénarios : léger (\fichier{/home}), moyen (\fichier{/usr}) et lourd (\fichier{/}). Ces tests permettent d'évaluer l'efficacité des différents modes de création de processus.
+\end{infobox}
+
+\subsection{Mode normal --- Scan complet (\opt{-C})}
+
+Le mode normal (\opt{-C}) exécute séquentiellement les \textbf{20 vérifications} de \cmd{full\_scan()} dans le processus courant. C'est le mode de référence pour comparer les performances.
+
+\subsubsection*{Commandes utilisées}
+
+\begin{lstlisting}[style=bash]
+time ./harden -C /home    # Scénario léger
+time ./harden -C /usr     # Scénario moyen
+time ./harden -C /        # Scénario lourd
+\end{lstlisting}
+
+\begin{capturebox}{cap:scan1}
+Exécution mode \opt{-C} --- scan léger sur \fichier{/home} --- affichage terminal + résultat \cmd{time}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:scan2}
+Exécution mode \opt{-C} --- scan lourd sur \fichier{/} --- résultat \cmd{time} (référence de performance)
+\end{capturebox}
+
+\subsection{Mode subshell (\opt{-s})}
+
+Le mode subshell exécute \cmd{full\_scan()} dans un sous-shell isolé via la syntaxe Bash \cmd{( full\_scan )}. Les variables modifiées dans le sous-shell n'affectent pas l'environnement parent. Ce mode illustre le concept d'isolation par sous-shell vu en cours.
+
+\subsubsection*{Commandes utilisées}
+
+\begin{lstlisting}[style=bash]
+time ./harden -s /home
+time ./harden -s /usr
+time ./harden -s /
+\end{lstlisting}
+
+\begin{capturebox}{cap:subshell}
+Exécution mode \opt{-s} (subshell) --- scan sur \fichier{/home} --- comparaison avec mode \opt{-C}
+\end{capturebox}
+
+\subsection{Mode fork (\opt{-f})}
+
+Le mode fork utilise le vrai appel système \cmd{fork()} via le helper C compilé dans \fichier{/tmp}. Le processus fils exécute \cmd{harden -C TARGET} via \cmd{execl()} et le PID est affiché dans les logs.
+
+\subsubsection*{Mécanisme}
+
+\begin{lstlisting}[style=bash]
+# Bash (harden.sh) :
+"${BUILD_DIR}/fork_helper" "$0 _real_fork_target $TARGET" &
+
+# fork_helper.c :
+pid_t pid = fork();
+if (pid == 0) { execl("/bin/sh", "sh", "-c", argv[1], NULL); }
+else { waitpid(pid, &status, 0); }
+\end{lstlisting}
+
+\subsubsection*{Commandes utilisées}
+
+\begin{lstlisting}[style=bash]
+time ./harden -f /home
+time ./harden -f /usr
+time ./harden -f /
+\end{lstlisting}
+
+\begin{capturebox}{cap:fork}
+Exécution mode \opt{-f} (fork réel) --- PID du processus fils visible dans les logs
+\end{capturebox}
+
+\subsection{Mode thread (\opt{-t})}
+
+Le mode thread utilise de vrais POSIX threads via le helper C (\fichier{thread\_helper}) avec \cmd{libpthread}. Les deux threads reçoivent des \textbf{commandes distinctes} : Thread~1 exécute les checks 1--11, Thread~2 exécute les checks 12--20.
+
+\subsubsection*{Mécanisme}
+
+\begin{lstlisting}[style=c]
+// thread_helper.c :
+data[0].command = argv[1]; /* "harden _thread_part1 $TARGET" */
+data[1].command = argv[2]; /* "harden _thread_part2 $TARGET" */
+pthread_create(&threads[0], NULL, run_command, &data[0]);
+pthread_create(&threads[1], NULL, run_command, &data[1]);
+pthread_join(threads[0], NULL);
+pthread_join(threads[1], NULL);
+\end{lstlisting}
+
+\subsubsection*{Commandes utilisées}
+
+\begin{lstlisting}[style=bash]
+time ./harden -t /home
+time ./harden -t /usr
+time ./harden -t /
+\end{lstlisting}
+
+\begin{capturebox}{cap:thread}
+Exécution mode \opt{-t} (POSIX threads réels) --- gain de performance sur scan lourd
+\end{capturebox}
+
+\subsection{Tableau comparatif des performances}
+
+Temps d'exécution (commande \cmd{time}, valeur \texttt{real}) mesurés sur les trois scénarios :
+
+\vspace{6pt}
+\begin{tabular}{L{3.2cm} C{2.5cm} C{2.5cm} C{2.5cm} C{2.5cm}}
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}Scénario} &
+  \textbf{\color{white}Normal \opt{-C}} &
+  \textbf{\color{white}Subshell \opt{-s}} &
+  \textbf{\color{white}Fork \opt{-f}} &
+  \textbf{\color{white}Thread \opt{-t}} \\
+  \rowcolor{white}
+  Léger (\fichier{/home})  & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s \\
+  \rowcolor{grisLt}
+  Moyen (\fichier{/usr})   & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s \\
+  \rowcolor{white}
+  Lourd (\fichier{/})      & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s \\
+\end{tabular}
+
+\begin{infobox}
+À compléter : remplacer les blancs par les valeurs réelles mesurées lors des tests avec \cmd{time} sur votre système.
+\end{infobox}
+
+\subsection{Fonctionnalités avancées}
+
+\subsubsection{Baseline de fichiers critiques}
+
+\begin{lstlisting}[style=bash]
+./harden -b store    # Stocke les hash SHA-256 de /etc/passwd, /etc/shadow,
+                     # /etc/sudoers, /etc/crontab, /etc/ssh/sshd_config
+                     # et tous les binaires SUID trouvés
+./harden -b check    # Détecte les modifications depuis la baseline
+\end{lstlisting}
+
+\begin{capturebox}{cap:baseline}
+Démonstration baseline \cmd{store} puis \cmd{check} --- détection d'un fichier modifié
+\end{capturebox}
+
+\subsubsection{Auto-remédiation}
+
+\begin{lstlisting}[style=bash]
+sudo ./harden -a     # Extrait les lignes "Fix:" du log et les applique
+                     # après confirmation interactive (y/N)
+\end{lstlisting}
+
+L'implémentation de l'auto-remédiation dans la version 4.0 a été sécurisée :
+\begin{itemize}
+    \item \textbf{Suppression de \cmd{eval}} : Prévention des injections de commandes via des logs malveillants.
+    \item \textbf{Whitelist stricte} : Seules les commandes \cmd{chmod} et \cmd{chown} sont autorisées.
+    \item \textbf{Protection système} : Les binaires critiques (\fichier{/usr/bin/sudo}, \fichier{/usr/bin/passwd}, etc.) sont protégés contre toute modification automatique.
+    \item \textbf{Backup systématique} : Création d'une sauvegarde dans \fichier{history.log/backup\_TIMESTAMP} avant modification.
+\end{itemize}
+
+\begin{capturebox}{cap:remediate}
+Auto-remédiation : liste des commandes \cmd{Fix:} extraites et confirmation d'application
+\end{capturebox}
+
+\subsubsection{Analyse CVE kernel}
+
+\begin{lstlisting}[style=bash]
+./harden -k    # Identifie Dirty Cow (CVE-2016-5195),
+               # Dirty Pipe (CVE-2022-0847), PwnKit (CVE-2021-4034)
+               # selon la version de uname -r
+\end{lstlisting}
+
+\begin{capturebox}{cap:cve}
+Résultat de \cmd{./harden -k} --- CVE détectés selon la version du noyau
+\end{capturebox}
+
+\subsubsection{Export JSON et Banner Grab}
+
+\begin{lstlisting}[style=bash]
+./harden -j    # Exporte history.log en JSON structuré via Python
+./harden -B    # Banner grabbing sur les ports 22, 80 et 443 via socket Python
+\end{lstlisting}
+
+\begin{capturebox}{cap:json}
+Export JSON du log et résultat banner grab sur les ports locaux
+\end{capturebox}
+
+\newpage
+
+%% ==============================================================
+\section{Gestion des erreurs}
+%% ==============================================================
+
+Conformément à la directive §3.2.3, le programme gère activement les erreurs d'utilisation incorrecte. Chaque erreur déclenche :
+\begin{enumerate}
+  \item Affichage coloré (rouge) sur \texttt{stderr}
+  \item Enregistrement dans le fichier \fichier{history.log}
+  \item Code de retour spécifique
+  \item Affichage automatique de la documentation (\opt{-h})
+\end{enumerate}
+
+\subsection{Tableau des codes d'erreur}
+
+\vspace{6pt}
+\begin{tabular}{C{1.5cm} L{3.5cm} L{8.8cm}}
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}Code} & \textbf{\color{white}Nom} & \textbf{\color{white}Description et déclenchement} \\
+  \rowcolor{white}
+  \textcolor{rouge}{\textbf{100}} & Option invalide     & Option non reconnue par \cmd{getopts} $\rightarrow$ \cmd{error\_exit "Invalid option" 100} \\
+  \rowcolor{grisLt}
+  \textcolor{rouge}{\textbf{101}} & Paramètre manquant  & Répertoire cible absent ou invalide $\rightarrow$ \cmd{error\_exit "Target directory required" 101} \\
+  \rowcolor{white}
+  \textcolor{rouge}{\textbf{102}} & Permission denied   & Option \opt{-r} sans root $\rightarrow$ \cmd{require\_root()} $\rightarrow$ \cmd{error\_exit 102} \\
+  \rowcolor{grisLt}
+  \textcolor{rouge}{\textbf{103}} & Erreur de log       & Impossible de créer le répertoire de log $\rightarrow$ \cmd{error\_exit "Cannot create log dir" 103} \\
+  \rowcolor{white}
+  \textcolor{rouge}{\textbf{104}} & Python introuvable  & Options \opt{-B}/\opt{-k}/\opt{-j} sans \cmd{python3} $\rightarrow$ \cmd{error\_exit "Python3 not found" 104} \\
+  \rowcolor{grisLt}
+  \textcolor{rouge}{\textbf{105}} & Compilation échouée & \cmd{gcc} absent ou erreur de compilation $\rightarrow$ \cmd{error\_exit "Failed to compile" 105} \\
+\end{tabular}
+
+\subsection{Code 100 --- Option invalide}
+
+Déclenché lorsqu'une option non reconnue est passée au script. \cmd{getopts} retourne \texttt{'?'} et la fonction \cmd{error\_exit()} est appelée avec le code 100.
+
+\begin{lstlisting}[style=bash]
+$ ./harden -z /home
+\end{lstlisting}
+
+\begin{capturebox}{cap:err100}
+Erreur code 100 : option invalide \opt{-z} --- message rouge sur stderr + aide automatique
+\end{capturebox}
+
+\subsection{Code 101 --- Paramètre manquant}
+
+Déclenché dans deux cas : aucun répertoire fourni après les options, ou le chemin fourni n'est pas un répertoire valide.
+
+\begin{lstlisting}[style=bash]
+$ ./harden -C                       # répertoire manquant
+$ ./harden -C /chemin/inexistant    # répertoire invalide
+\end{lstlisting}
+
+\begin{capturebox}{cap:err101}
+Erreur code 101 : répertoire cible manquant ou invalide
+\end{capturebox}
+
+\subsection{Code 102 --- Permission denied}
+
+Déclenché par l'option \opt{-r} (restore) sans privilèges root. La fonction \cmd{require\_root()} vérifie \cmd{\$EUID} avant toute action.
+
+\begin{lstlisting}[style=bash]
+$ ./harden -r    # execute sans sudo (sans root)
+\end{lstlisting}
+
+\begin{capturebox}{cap:err102}
+Erreur code 102 : tentative de restore sans privilèges root
+\end{capturebox}
+
+\subsection{Code 103 --- Erreur de log}
+
+Déclenché lorsque le script ne peut pas créer le répertoire de log spécifié via \opt{-l} (permissions insuffisantes).
+
+\begin{lstlisting}[style=bash]
+$ ./harden -l /root/logs -C /home    # sans sudo
+\end{lstlisting}
+
+\begin{capturebox}{cap:err103}
+Erreur code 103 : impossible de créer le répertoire de log
+\end{capturebox}
+
+\subsection{Codes 104 et 105 --- Python / Compilation C}
+
+Le code 104 est déclenché si \cmd{python3} est absent lors de l'utilisation des options \opt{-B}, \opt{-k} ou \opt{-j}. Le code 105 est déclenché si \cmd{gcc} est absent ou si la compilation du helper C échoue.
+
+\begin{lstlisting}[style=bash]
+$ ./harden -B           # si python3 absent -> code 104
+$ ./harden -t /home     # si gcc absent -> code 105
+\end{lstlisting}
+
+\begin{capturebox}{cap:err104105}
+Erreurs codes 104 et 105 --- Python introuvable ou compilation C échouée
+\end{capturebox}
+
+\newpage
+
+%% ==============================================================
+\section{Documentation}
+%% ==============================================================
+
+\subsection{Documentation intégrée (\opt{-h})}
+
+Conformément à la directive §3.2.5, une documentation complète est intégrée dans le script et accessible via l'option \opt{-h}. Elle couvre la syntaxe, toutes les options, les paramètres obligatoires, les codes d'erreur et des exemples concrets.
+
+\begin{lstlisting}[style=bash]
+$ ./harden -h
+\end{lstlisting}
+
+\begin{capturebox}{cap:help}
+Affichage complet de l'aide avec \cmd{./harden -h}
+\end{capturebox}
+
+\subsection{Structure de la documentation intégrée}
+
+\vspace{6pt}
+\begin{tabular}{L{3.5cm} L{10.3cm}}
+  \rowcolor{bleuENSET}
+  \textbf{\color{white}Élément} & \textbf{\color{white}Contenu} \\
+  \rowcolor{white}
+  En-tête         & Nom HARDEN, version 4.0, date (14-05-2026) \\
+  \rowcolor{grisLt}
+  Syntaxe         & \cmd{harden [OPTIONS] [<directory>]} \\
+  \rowcolor{white}
+  Options         & Liste des \textbf{16 options} avec description courte (\opt{-h} \opt{-c} \opt{-C} \opt{-t} \opt{-s} \opt{-f} \opt{-l} \opt{-r} \opt{-n} \opt{-v} \opt{-V} \opt{-a} \opt{-b} \opt{-B} \opt{-k} \opt{-j}) \\
+  \rowcolor{grisLt}
+  Paramètre       & Description du répertoire cible (obligatoire pour \opt{-c}/\opt{-C}/\opt{-t}/\opt{-s}/\opt{-f}) \\
+  \rowcolor{white}
+  Codes d'erreur  & Tableau des codes 100--105 avec signification \\
+  \rowcolor{grisLt}
+  Exemples        & 12 exemples d'utilisation couvrant tous les modes \\
+\end{tabular}
+
+\subsection{Bannière ASCII art}
+
+HARDEN affiche une bannière colorée au démarrage de chaque scan, identifiant visuellement l'outil avec sa version (codes ANSI bleu) :
+
+\begin{lstlisting}[style=bash]
+=============================================================
+HARDEN - Linux Audit, Hardening & Remediation Suite
+Version: 4.0 (14-05-2026)
+=============================================================
+\end{lstlisting}
+
+\begin{capturebox}{cap:banner}
+Bannière HARDEN affichée au démarrage du scan avec couleurs ANSI
+\end{capturebox}
+
+\subsection{Résumé de fin de scan}
+
+À la fin de chaque scan, HARDEN affiche un résumé récapitulatif indiquant le nombre d'issues critiques, d'avertissements et de messages d'information, ainsi que les 3 derniers problèmes critiques détectés.
+
+\begin{lstlisting}[style=bash]
+=== SUMMARY ===
+Critical issues: 3
+Warnings: 12
+Info messages: 45
+Log saved to: /var/log/harden/history.log
+
+Top critical issues:
+  - Passwordless sudo rule: user ALL=(ALL) NOPASSWD:ALL
+  - Vulnerable SUID binary: /usr/bin/vim.basic
+  - /etc/passwd is writable
+\end{lstlisting}
+
+\begin{capturebox}{cap:summary}
+Résumé final affiché après un scan complet avec les issues critiques détectées
+\end{capturebox}
+
+\newpage
+
+%% ==============================================================
+\section{Conclusion}
+%% ==============================================================
+
+\textbf{HARDEN v4.0} est un outil d'audit et de durcissement de sécurité Linux complet, développé en Bash avec des extensions en langage C. Il répond à un besoin réel des administrateurs système en automatisant la détection de \textbf{20 catégories de risques}, tout en respectant l'ensemble des directives du mini-projet.
+
+Le script implémente avec succès les quatre modes d'exécution requis (normal, subshell, fork réel et thread réel POSIX), une gestion robuste des logs horodatés avec verrouillage via \cmd{flock}, ainsi qu'une gestion complète des erreurs avec six codes de retour spécifiques.
+
+L'utilisation de helpers C compilés (\fichier{fork\_helper.c} et \fichier{thread\_helper.c}) représente une plus-value notable : les appels système \cmd{fork()} et \cmd{pthread\_create()} sont réellement invoqués, garantissant une concurrence réelle et efficace.
+
+\section*{Historique des modifications}
+\begin{itemize}
+    \item \textbf{v1.0 - v2.0} : Implémentation des checks de base et du logging séquentiel.
+    \item \textbf{v3.0} : Introduction des helpers C pour fork et threads.
+    \item \textbf{v4.0 (Actuelle)} : Intégration de \cmd{flock} pour le logging concurrent, sécurisation du \cmd{BUILD\_DIR} avec \cmd{mktemp}, implémentation du mode fork avec \cmd{disown} et silence fils, et passage à 20 checks de sécurité complets.
+\end{itemize}
+
+\vspace{1cm}
+
+\begin{pointsbox}
+\begin{itemize}
+  \item \textbf{20 vérifications} dans \cmd{full\_scan} + \textbf{7} dans \cmd{quick\_scan} --- architecture modulaire \cmd{quick\_scan / full\_scan}
+  \item 4 modes d'exécution réels : normal, subshell \cmd{( full\_scan )}, \cmd{fork()} C, pthreads C
+  \item Logging simple : \cmd{echo | sed >> history.log} --- horodatage + 4 niveaux de sévérité
+  \item 6 codes d'erreur avec affichage automatique de l'aide + \cmd{exit} explicite
+  \item Helpers C dans \fichier{/tmp} --- vrais \cmd{fork()} et \cmd{pthread\_create()}, Thread split fonctionnel
+  \item Fonctionnalités bonus : baseline SHA-256, auto-remédiation, JSON, CVE kernel, banner grab
+  \item Architecture modulaire facilitant l'extension du script
+  \item Compatibilité root/non-root avec adaptation automatique des chemins de log
+\end{itemize}
+\end{pointsbox}
+
+\vfill
+
+\begin{flushright}
+  \textcolor{grisTexte}{\textit{ENSET Mohammedia --- Mai 2026}}
+\end{flushright}
+
+\end{document}
