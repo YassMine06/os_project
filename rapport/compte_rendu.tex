@@ -1,6 +1,6 @@
 ﻿%% HARDEN v4.0 — Rapport Mini Projet Shell
 %% ENSET Mohammedia — Université Hassan II de Casablanca
-%% Module : Théorie des Systèmes d'Exploitation & SE Windows/Unix/Linux
+%% Module : Systèmes d'exploitation
 %% ============================================================
 \documentclass[12pt,a4paper]{article}
 
@@ -77,7 +77,7 @@
 \renewcommand{\footrulewidth}{0.4pt}
 \fancyhead[L]{\small\textcolor{bleuMed}{\textbf{HARDEN v4.0}} }
 \fancyhead[R]{\small\textcolor{grisTexte}{ENSET Mohammedia --- 2025/2026}}
-\fancyfoot[L]{\small\textcolor{grisTexte}{Module : Th\'{e}orie des SE \& SE Windows/Unix/Linux}}
+\fancyfoot[L]{\small\textcolor{grisTexte}{Module : Systèmes d'exploitation}}
 \fancyfoot[R]{\small\textcolor{grisTexte}{Page \thepage\ / \pageref{LastPage}}}
 \usepackage{lastpage}
 
@@ -166,11 +166,11 @@
   breakable,
 }
 
-\newtcolorbox{capturebox}[1]{
+\newtcolorbox{capturebox}[2]{
   colback=grisLt, colframe=bleuMed,
   leftrule=0.4pt, rightrule=0.4pt, toprule=0.4pt, bottomrule=0.4pt,
   arc=2pt, boxsep=8pt,
-  title={\small\bfseries\color{bleuMed} Capture d'écran},
+  title={\small\bfseries\color{white} #2},
   fontupper=\small\itshape\color{grisTexte},
   breakable,
   label={#1},
@@ -216,12 +216,7 @@
 
 \begin{center}
   % -- Logo -----------------------------------------------------
-  \includegraphics[width=6cm]{LOGO_ENSET-removebg-preview.png} \\[1cm]
-
-  % -- Université -----------------------------------------------
-  {\large\bfseries\color{bleuENSET} UNIVERSITÉ HASSAN II DE CASABLANCA} \\[0.2cm]
-  {\large\bfseries\color{bleuENSET} École Normale Supérieure de l'Enseignement Technique} \\[0.2cm]
-  {\large\bfseries\color{bleuENSET} Mohammedia} \\[2cm]
+  \includegraphics[width=10cm]{LOGO_ENSET-removebg-preview.png} \\[1cm]
 
   % -- Titre Box ------------------------------------------------
   \begin{tcolorbox}[
@@ -250,15 +245,13 @@
   \renewcommand{\arraystretch}{1.6}
   \begin{tabular}{L{5cm} L{9cm}}
     \rowcolor{bleuClair}
-    \textbf{\color{bleuENSET}Module}         & Théorie des Systèmes d'Exploitation \& Linux \\
-    \textbf{\color{bleuENSET}Encadrant}      & ENSET Mohammedia \\
+    \textbf{\color{bleuENSET}Module}         & Systèmes d'exploitation \\
+    \textbf{\color{bleuENSET}Encadrant}      & Prof. Abdellah OUAGUID \\
     \rowcolor{bleuClair}
     \textbf{\color{bleuENSET}TeamID}         & Team-B09\\
-    \textbf{\color{bleuENSET}Membres}        & \underline{\hspace{6cm}} \\
+    \textbf{\color{bleuENSET}Membres}        & NAJDI Med Nourredine \newline SOUIHLA Marwa \newline MAJOCH Yassmine \newline EL KATALI Yassir \\
     \rowcolor{bleuClair}
-                                             & \underline{\hspace{6cm}} \\
     \textbf{\color{bleuENSET}Date}           & 14/05/2026 \\
-    \rowcolor{bleuClair}
     \textbf{\color{bleuENSET}Version script} & 4.0 (14-05-2026) \\
   \end{tabular}
 
@@ -496,8 +489,7 @@ L'emplacement du fichier log s'adapte automatiquement selon les privilèges :
   \item \textbf{option} \opt{-l DIR} \textbf{:} répertoire personnalisé spécifié par l'utilisateur
 \end{itemize}
 
-\begin{capturebox}{cap:logs1}
-  Contenu du fichier \fichier{history.log} après un scan complet --- niveaux INFOS / WARNING / CRITICAL
+\begin{capturebox}{cap:logs1}{Contenu du fichier \fichier{history.log} après un scan complet --- niveaux INFOS / WARNING / CRITICAL}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{fichier history_log.png}
   \end{center}
@@ -505,8 +497,7 @@ L'emplacement du fichier log s'adapte automatiquement selon les privilèges :
 
 \vspace{6pt}
 
-\begin{capturebox}{cap:logs2}
-  Affichage coloré dans le terminal --- codes couleur ANSI verts, jaunes, rouges
+\begin{capturebox}{cap:logs2}{Affichage coloré dans le terminal --- codes couleur ANSI verts, jaunes, rouges}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{scan couleur.png}
   \end{center}
@@ -622,8 +613,7 @@ Le mode normal (\opt{-C}) exécute séquentiellement les \textbf{20 vérificatio
 ./harden.sh -C /        # Scénario lourd
 \end{lstlisting}
 
-\begin{capturebox}{cap:scan1}
-  Exécution mode \opt{-C} --- scan léger sur \fichier{/home} --- affichage terminal
+\begin{capturebox}{cap:scan1}{Exécution mode \opt{-C} --- scan léger sur \fichier{/home} --- affichage terminal}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-C sur home.png}
   \end{center}
@@ -631,8 +621,15 @@ Le mode normal (\opt{-C}) exécute séquentiellement les \textbf{20 vérificatio
 
 \vspace{6pt}
 
-\begin{capturebox}{cap:scan2}
-  Exécution mode \opt{-C} --- scan lourd sur \fichier{/}
+\begin{capturebox}{cap:scan_moyen}{Exécution mode \opt{-C} --- scan moyen sur \fichier{/usr}}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-C sur user.png}
+  \end{center}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:scan2}{Exécution mode \opt{-C} --- scan lourd sur \fichier{/}}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-C sur racine.png}
   \end{center}
@@ -650,10 +647,25 @@ Le mode subshell exécute \cmd{full\_scan()} dans un sous-shell isolé via la sy
 ./harden.sh -s /
 \end{lstlisting}
 
-\begin{capturebox}{cap:subshell}
-  Exécution mode \opt{-s} (subshell) --- scan sur \fichier{/home} --- comparaison avec mode \opt{-C}
+\begin{capturebox}{cap:subshell}{Exécution mode \opt{-s} (subshell) --- scan sur \fichier{/home} --- comparaison avec mode \opt{-C}}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-s sur home.png}
+  \end{center}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:subshell_usr}{Exécution mode \opt{-s} (subshell) --- scan sur \fichier{/usr}}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-s sue usr.png}
+  \end{center}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:subshell_root}{Exécution mode \opt{-s} (subshell) --- scan sur \fichier{/}}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-s sur racine.png}
   \end{center}
 \end{capturebox}
 
@@ -684,10 +696,25 @@ full_scan                    # Parent interactif
 ./harden.sh -f / /home       # Père: /     | Fils: /home
 \end{lstlisting}
 
-\begin{capturebox}{cap:fork}
-  Exécution mode \opt{-f} (fork asynchrone) --- Scan simultané de deux répertoires cibles
+\begin{capturebox}{cap:fork}{Exécution mode \opt{-f} (fork asynchrone) --- Scan sur \fichier{/home} et \fichier{/tmp}}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-f home et tmp.png}
+  \end{center}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:fork_usr}{Exécution mode \opt{-f} (fork asynchrone) --- Scan sur \fichier{/usr} et \fichier{/var}}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-f usr et var.png}
+  \end{center}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:fork_root}{Exécution mode \opt{-f} (fork asynchrone) --- Scan sur \fichier{/} et \fichier{/home}}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-f sur racine et home.png}
   \end{center}
 \end{capturebox}
 
@@ -715,10 +742,25 @@ pthread_join(threads[1], NULL);
 ./harden.sh -t /
 \end{lstlisting}
 
-\begin{capturebox}{cap:thread}
-  Exécution mode \opt{-t} (POSIX threads réels) --- scan complet multi-threadé
+\begin{capturebox}{cap:thread}{Exécution mode \opt{-t} --- scan multi-threadé sur \fichier{/home}}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-t sur home.png}
+  \end{center}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:thread_usr}{Exécution mode \opt{-t} --- scan multi-threadé sur \fichier{/usr}}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-t sur usr.png}
+  \end{center}
+\end{capturebox}
+
+\vspace{6pt}
+
+\begin{capturebox}{cap:thread_root}{Exécution mode \opt{-t} --- scan multi-threadé sur \fichier{/}}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-t sur racine.png}
   \end{center}
 \end{capturebox}
 
@@ -734,9 +776,16 @@ pthread_join(threads[1], NULL);
                      # et tous les binaires SUID trouvés
 ./harden -b check    # Détecte les modifications depuis la baseline
 \end{lstlisting}
+\newpage
+\begin{capturebox}{cap:b_store}{Démonstration baseline \cmd{store} --- création de la baseline}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-b store.png}
+  \end{center}
+\end{capturebox}
 
-\begin{capturebox}{cap:baseline}
-  Démonstration baseline \cmd{store} puis \cmd{check} --- détection d'un fichier modifié
+\vspace{6pt}
+
+\begin{capturebox}{cap:b_check}{Démonstration baseline \cmd{check} --- détection d'un fichier modifié}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-b check.png}
   \end{center}
@@ -767,8 +816,7 @@ L'implémentation de l'auto-remédiation dans la version 4.0 a été sécurisée
                # selon la version de uname -r
 \end{lstlisting}
 
-\begin{capturebox}{cap:cve}
-  Résultat de \cmd{./harden -k} --- CVE détectés selon la version du noyau
+\begin{capturebox}{cap:cve}{Résultat de \cmd{./harden -k} --- CVE détectés selon la version du noyau}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-k.png}
   \end{center}
@@ -781,8 +829,7 @@ L'implémentation de l'auto-remédiation dans la version 4.0 a été sécurisée
 ./harden -B    # Banner grabbing sur les ports 22, 80 et 443 via socket Python
 \end{lstlisting}
 
-\begin{capturebox}{cap:json}
-  Export JSON du log et résultat banner grab sur les ports locaux
+\begin{capturebox}{cap:json}{Export JSON du log et résultat banner grab sur les ports locaux}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{-j.png}
     \vspace{4pt}
@@ -832,8 +879,7 @@ Déclenché lorsqu'une option non reconnue est passée au script. \cmd{getopts} 
 $ ./harden -z /home
 \end{lstlisting}
 
-\begin{capturebox}{cap:err100}
-  Erreur code 100 : option invalide \opt{-z} --- message rouge sur stderr + aide automatique
+\begin{capturebox}{cap:err100}{Erreur code 100 : option invalide \opt{-z} --- message rouge sur stderr + aide automatique}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{code 100.png}
   \end{center}
@@ -848,8 +894,7 @@ $ ./harden -C                       # répertoire manquant
 $ ./harden -C /chemin/inexistant    # répertoire invalide
 \end{lstlisting}
 
-\begin{capturebox}{cap:err101}
-  Erreur code 101 : répertoire cible manquant ou invalide
+\begin{capturebox}{cap:err101}{Erreur code 101 : répertoire cible manquant ou invalide}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{code 101.png}
   \end{center}
@@ -863,8 +908,7 @@ Déclenché par l'option \opt{-r} (restore) sans privilèges root. La fonction \
 $ ./harden -r    # execute sans sudo (sans root)
 \end{lstlisting}
 
-\begin{capturebox}{cap:err102}
-  Erreur code 102 : tentative de restore sans privilèges root
+\begin{capturebox}{cap:err102}{Erreur code 102 : tentative de restore sans privilèges root}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{code 102.png}
   \end{center}
@@ -878,8 +922,7 @@ Déclenché lorsque le script ne peut pas créer le répertoire de log spécifi�
 $ ./harden -l /root/logs -C /home    # sans sudo
 \end{lstlisting}
 
-\begin{capturebox}{cap:err103}
-  Erreur code 103 : impossible de créer le répertoire de log
+\begin{capturebox}{cap:err103}{Erreur code 103 : impossible de créer le répertoire de log}
   \begin{center}
     \includegraphics[width=0.95\linewidth]{code 103.png}
   \end{center}
@@ -894,7 +937,9 @@ $ ./harden -B           # si python3 absent -> code 104
 $ ./harden -t /home     # si gcc absent -> code 105
 \end{lstlisting}
 
-
+\begin{infobox}
+\textbf{Note :} L'absence de captures d'écran pour les codes 104 et 105 s'explique par le fait que \cmd{python3} et \cmd{gcc} sont essentiels et déjà installés sur notre environnement de test. Il n'a donc pas été possible de déclencher ces erreurs naturellement sans désinstaller ces composants système critiques.
+\end{infobox}
 
 \newpage
 
@@ -910,10 +955,11 @@ Conformément à la directive §3.2.5, une documentation complète est intégré
 $ ./harden -h
 \end{lstlisting}
 
-\begin{capturebox}{cap:help}
-  Affichage complet de l'aide avec \cmd{./harden -h}
+\begin{capturebox}{cap:help}{Affichage complet de l'aide avec \cmd{./harden -h}}
   \begin{center}
-    \includegraphics[width=0.95\linewidth]{-h 1.png}
+    \includegraphics[width=0.85\linewidth,height=10cm,keepaspectratio]{-h 1.png}
+    \vspace{2pt}
+    \includegraphics[width=0.85\linewidth,height=10cm,keepaspectratio]{-h 2.png}
   \end{center}
 \end{capturebox}
 
@@ -943,21 +989,15 @@ $ ./harden -h
 
 \begin{lstlisting}[style=bash]
 === SUMMARY ===
-Critical issues: 3
-Warnings: 12
-Info messages: 45
-Log saved to: /var/log/harden/history.log
-
-Top critical issues:
-  - Passwordless sudo rule: user ALL=(ALL) NOPASSWD:ALL
-  - Vulnerable SUID binary: /usr/bin/vim.basic
-  - /etc/passwd is writable
+Critical issues: 0
+Warnings: 2
+Info messages: 5
+Log saved to: /var/log/.harden/history.log
 \end{lstlisting}
 
-\begin{capturebox}{cap:summary}
-  Résumé final affiché après un scan complet avec les issues critiques détectées
+\begin{capturebox}{cap:summary}{Résumé final affiché après un scan complet avec les issues critiques détectées}
   \begin{center}
-    \includegraphics[width=0.95\linewidth]{scan couleur.png}
+    \includegraphics[width=0.95\linewidth]{Résumé de fin de scan.png}
   \end{center}
 \end{capturebox}
 
