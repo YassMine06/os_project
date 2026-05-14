@@ -1,4 +1,4 @@
-%% HARDEN v4.0 — Rapport Mini Projet Shell
+﻿%% HARDEN v4.0 — Rapport Mini Projet Shell
 %% ENSET Mohammedia — Université Hassan II de Casablanca
 %% Module : Théorie des Systèmes d'Exploitation & SE Windows/Unix/Linux
 %% ============================================================
@@ -187,7 +187,9 @@
 
 %% -- Graphiques / images --------------------------------------
 \usepackage{graphicx}
+\graphicspath{{screenshoot/}}
 \usepackage{float}
+\usepackage{grffile}
 
 %% -- Maths ---------------------------------------------------
 \usepackage{amsmath}
@@ -251,7 +253,7 @@
     \textbf{\color{bleuENSET}Module}         & Théorie des Systèmes d'Exploitation \& Linux \\
     \textbf{\color{bleuENSET}Encadrant}      & ENSET Mohammedia \\
     \rowcolor{bleuClair}
-    \textbf{\color{bleuENSET}TeamID}         & \underline{\hspace{6cm}} \\
+    \textbf{\color{bleuENSET}TeamID}         & Team-B09\\
     \textbf{\color{bleuENSET}Membres}        & \underline{\hspace{6cm}} \\
     \rowcolor{bleuClair}
                                              & \underline{\hspace{6cm}} \\
@@ -474,8 +476,10 @@ Le scan complet (\opt{-C}) exécute \textbf{20 vérifications} via \cmd{full\_sc
 Toutes les sorties sont simultanément affichées dans le terminal (codes couleur ANSI) et enregistrées dans \fichier{history.log} après stripping des couleurs via \cmd{sed}. Le format respecte strictement la directive \S{}3.2.2 :
 
 \begin{lstlisting}[style=bash]
-yyyy-mm-dd-hh-mm-ss : username : INFOS/WARNING/CRITICAL : message
+yyyy-mm-dd-hh-mm-ss : username : INFOS/ERROR/WARNING/CRITICAL : message
 \end{lstlisting}
+
+\textbf{Note sur les types de messages :} Conformément à la directive \S{}3.2.2, le script utilise les types \texttt{INFOS} pour les sorties standards et \texttt{ERROR} pour les erreurs. Les niveaux \texttt{WARNING} et \texttt{CRITICAL} ont été ajoutés pour affiner la sévérité des détections de sécurité.
 
 \textbf{Améliorations techniques du logging :}
 \begin{itemize}
@@ -493,13 +497,19 @@ L'emplacement du fichier log s'adapte automatiquement selon les privilèges :
 \end{itemize}
 
 \begin{capturebox}{cap:logs1}
-Contenu du fichier \fichier{history.log} après un scan complet --- niveaux INFOS / WARNING / CRITICAL
+  Contenu du fichier \fichier{history.log} après un scan complet --- niveaux INFOS / WARNING / CRITICAL
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{fichier history_log.png}
+  \end{center}
 \end{capturebox}
 
 \vspace{6pt}
 
 \begin{capturebox}{cap:logs2}
-Affichage coloré dans le terminal --- codes couleur ANSI verts, jaunes, rouges
+  Affichage coloré dans le terminal --- codes couleur ANSI verts, jaunes, rouges
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{scan couleur.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Helpers C compilés à la volée}
@@ -508,7 +518,7 @@ Conformément à la directive §3.2.2 permettant des \textit{«~scripts complém
 
 \subsubsection{fork\_helper.c --- mode \opt{-f}}
 
-Ce helper implémente un vrai appel système \cmd{fork()} (via la fonction POSIX \texttt{fork(2)}). Le processus parent lance le fils et continue son exécution, tandis que le fils s'exécute en arrière-plan (\cmd{disown}) avec une redirection silencieuse de ses sorties standards.
+Ce helper implémente un vrai appel système \cmd{fork()} (via la fonction POSIX \texttt{fork(2)}). Le processus parent lance le fils et continue son exécution, tandis que le fils s'exécute en arrière-plan (\cmd{disown}) avec une redirection silencieuse de ses sorties standards.\\
 
 \begin{lstlisting}[style=c]
 pid_t pid = fork();
@@ -597,7 +607,7 @@ Le script HARDEN v4.0 intègre des mécanismes d'auto-protection pour garantir s
 %% ==============================================================
 
 \begin{infobox}
-Conformément à la directive §3.2.4, les quatre modes d'exécution ont été testés avec la commande \cmd{time} sur trois scénarios : léger (\fichier{/home}), moyen (\fichier{/usr}) et lourd (\fichier{/}). Ces tests permettent d'évaluer l'efficacité des différents modes de création de processus.
+Conformément à la directive §3.2.4, les quatre modes d'exécution ont été testés sur trois scénarios : léger (\fichier{/home}), moyen (\fichier{/usr}) et lourd (\fichier{/}). Ces tests permettent d'évaluer l'efficacité des différents modes de création de processus.
 \end{infobox}
 
 \subsection{Mode normal --- Scan complet (\opt{-C})}
@@ -607,19 +617,25 @@ Le mode normal (\opt{-C}) exécute séquentiellement les \textbf{20 vérificatio
 \subsubsection*{Commandes utilisées}
 
 \begin{lstlisting}[style=bash]
-time ./harden -C /home    # Scénario léger
-time ./harden -C /usr     # Scénario moyen
-time ./harden -C /        # Scénario lourd
+./harden.sh -C /home    # Scénario léger
+./harden.sh -C /usr     # Scénario moyen
+./harden.sh -C /        # Scénario lourd
 \end{lstlisting}
 
 \begin{capturebox}{cap:scan1}
-Exécution mode \opt{-C} --- scan léger sur \fichier{/home} --- affichage terminal + résultat \cmd{time}
+  Exécution mode \opt{-C} --- scan léger sur \fichier{/home} --- affichage terminal
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-C sur home.png}
+  \end{center}
 \end{capturebox}
 
 \vspace{6pt}
 
 \begin{capturebox}{cap:scan2}
-Exécution mode \opt{-C} --- scan lourd sur \fichier{/} --- résultat \cmd{time} (référence de performance)
+  Exécution mode \opt{-C} --- scan lourd sur \fichier{/}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-C sur racine.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Mode subshell (\opt{-s})}
@@ -629,41 +645,50 @@ Le mode subshell exécute \cmd{full\_scan()} dans un sous-shell isolé via la sy
 \subsubsection*{Commandes utilisées}
 
 \begin{lstlisting}[style=bash]
-time ./harden -s /home
-time ./harden -s /usr
-time ./harden -s /
+./harden.sh -s /home
+./harden.sh -s /usr
+./harden.sh -s /
 \end{lstlisting}
 
 \begin{capturebox}{cap:subshell}
-Exécution mode \opt{-s} (subshell) --- scan sur \fichier{/home} --- comparaison avec mode \opt{-C}
+  Exécution mode \opt{-s} (subshell) --- scan sur \fichier{/home} --- comparaison avec mode \opt{-C}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-s sur home.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Mode fork (\opt{-f})}
 
-Le mode fork utilise le vrai appel système \cmd{fork()} via le helper C compilé dans \fichier{/tmp}. Le processus fils exécute \cmd{harden -C TARGET} via \cmd{execl()} et le PID est affiché dans les logs.
+Le mode fork permet désormais une \textbf{exécution simultanée} et non-bloquante. Le script lance un processus fils en arrière-plan pour scanner un second répertoire cible, tandis que le processus parent effectue le scan du premier répertoire en temps réel dans le terminal.
 
 \subsubsection*{Mécanisme}
 
 \begin{lstlisting}[style=bash]
 # Bash (harden.sh) :
-"${BUILD_DIR}/fork_helper" "$0 _real_fork_target $TARGET" &
+( 
+  TARGET="$dir2"
+  full_scan >/dev/null 2>&1  # Fils silencieux
+) & 
+child_pid=$!
+disown "$child_pid"          # Détachement du processus
 
-# fork_helper.c :
-pid_t pid = fork();
-if (pid == 0) { execl("/bin/sh", "sh", "-c", argv[1], NULL); }
-else { waitpid(pid, &status, 0); }
+TARGET="$dir1"
+full_scan                    # Parent interactif
 \end{lstlisting}
 
 \subsubsection*{Commandes utilisées}
 
 \begin{lstlisting}[style=bash]
-time ./harden -f /home
-time ./harden -f /usr
-time ./harden -f /
+./harden.sh -f /home /tmp    # Père: /home | Fils: /tmp
+./harden.sh -f /usr /var     # Père: /usr  | Fils: /var
+./harden.sh -f / /home       # Père: /     | Fils: /home
 \end{lstlisting}
 
 \begin{capturebox}{cap:fork}
-Exécution mode \opt{-f} (fork réel) --- PID du processus fils visible dans les logs
+  Exécution mode \opt{-f} (fork asynchrone) --- Scan simultané de deux répertoires cibles
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-f home et tmp.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Mode thread (\opt{-t})}
@@ -685,38 +710,19 @@ pthread_join(threads[1], NULL);
 \subsubsection*{Commandes utilisées}
 
 \begin{lstlisting}[style=bash]
-time ./harden -t /home
-time ./harden -t /usr
-time ./harden -t /
+./harden.sh -t /home
+./harden.sh -t /usr
+./harden.sh -t /
 \end{lstlisting}
 
 \begin{capturebox}{cap:thread}
-Exécution mode \opt{-t} (POSIX threads réels) --- gain de performance sur scan lourd
+  Exécution mode \opt{-t} (POSIX threads réels) --- scan complet multi-threadé
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-t sur home.png}
+  \end{center}
 \end{capturebox}
 
-\subsection{Tableau comparatif des performances}
 
-Temps d'exécution (commande \cmd{time}, valeur \texttt{real}) mesurés sur les trois scénarios :
-
-\vspace{6pt}
-\begin{tabular}{L{3.2cm} C{2.5cm} C{2.5cm} C{2.5cm} C{2.5cm}}
-  \rowcolor{bleuENSET}
-  \textbf{\color{white}Scénario} &
-  \textbf{\color{white}Normal \opt{-C}} &
-  \textbf{\color{white}Subshell \opt{-s}} &
-  \textbf{\color{white}Fork \opt{-f}} &
-  \textbf{\color{white}Thread \opt{-t}} \\
-  \rowcolor{white}
-  Léger (\fichier{/home})  & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s \\
-  \rowcolor{grisLt}
-  Moyen (\fichier{/usr})   & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s \\
-  \rowcolor{white}
-  Lourd (\fichier{/})      & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s & \underline{\hspace{1.2cm}} s \\
-\end{tabular}
-
-\begin{infobox}
-À compléter : remplacer les blancs par les valeurs réelles mesurées lors des tests avec \cmd{time} sur votre système.
-\end{infobox}
 
 \subsection{Fonctionnalités avancées}
 
@@ -730,7 +736,10 @@ Temps d'exécution (commande \cmd{time}, valeur \texttt{real}) mesurés sur les 
 \end{lstlisting}
 
 \begin{capturebox}{cap:baseline}
-Démonstration baseline \cmd{store} puis \cmd{check} --- détection d'un fichier modifié
+  Démonstration baseline \cmd{store} puis \cmd{check} --- détection d'un fichier modifié
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-b check.png}
+  \end{center}
 \end{capturebox}
 
 \subsubsection{Auto-remédiation}
@@ -748,9 +757,7 @@ L'implémentation de l'auto-remédiation dans la version 4.0 a été sécurisée
     \item \textbf{Backup systématique} : Création d'une sauvegarde dans \fichier{history.log/backup\_TIMESTAMP} avant modification.
 \end{itemize}
 
-\begin{capturebox}{cap:remediate}
-Auto-remédiation : liste des commandes \cmd{Fix:} extraites et confirmation d'application
-\end{capturebox}
+
 
 \subsubsection{Analyse CVE kernel}
 
@@ -761,7 +768,10 @@ Auto-remédiation : liste des commandes \cmd{Fix:} extraites et confirmation d'a
 \end{lstlisting}
 
 \begin{capturebox}{cap:cve}
-Résultat de \cmd{./harden -k} --- CVE détectés selon la version du noyau
+  Résultat de \cmd{./harden -k} --- CVE détectés selon la version du noyau
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-k.png}
+  \end{center}
 \end{capturebox}
 
 \subsubsection{Export JSON et Banner Grab}
@@ -772,7 +782,12 @@ Résultat de \cmd{./harden -k} --- CVE détectés selon la version du noyau
 \end{lstlisting}
 
 \begin{capturebox}{cap:json}
-Export JSON du log et résultat banner grab sur les ports locaux
+  Export JSON du log et résultat banner grab sur les ports locaux
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-j.png}
+    \vspace{4pt}
+    \includegraphics[width=0.95\linewidth]{-B.png}
+  \end{center}
 \end{capturebox}
 
 \newpage
@@ -818,7 +833,10 @@ $ ./harden -z /home
 \end{lstlisting}
 
 \begin{capturebox}{cap:err100}
-Erreur code 100 : option invalide \opt{-z} --- message rouge sur stderr + aide automatique
+  Erreur code 100 : option invalide \opt{-z} --- message rouge sur stderr + aide automatique
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{code 100.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Code 101 --- Paramètre manquant}
@@ -831,7 +849,10 @@ $ ./harden -C /chemin/inexistant    # répertoire invalide
 \end{lstlisting}
 
 \begin{capturebox}{cap:err101}
-Erreur code 101 : répertoire cible manquant ou invalide
+  Erreur code 101 : répertoire cible manquant ou invalide
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{code 101.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Code 102 --- Permission denied}
@@ -843,7 +864,10 @@ $ ./harden -r    # execute sans sudo (sans root)
 \end{lstlisting}
 
 \begin{capturebox}{cap:err102}
-Erreur code 102 : tentative de restore sans privilèges root
+  Erreur code 102 : tentative de restore sans privilèges root
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{code 102.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Code 103 --- Erreur de log}
@@ -855,7 +879,10 @@ $ ./harden -l /root/logs -C /home    # sans sudo
 \end{lstlisting}
 
 \begin{capturebox}{cap:err103}
-Erreur code 103 : impossible de créer le répertoire de log
+  Erreur code 103 : impossible de créer le répertoire de log
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{code 103.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Codes 104 et 105 --- Python / Compilation C}
@@ -867,9 +894,7 @@ $ ./harden -B           # si python3 absent -> code 104
 $ ./harden -t /home     # si gcc absent -> code 105
 \end{lstlisting}
 
-\begin{capturebox}{cap:err104105}
-Erreurs codes 104 et 105 --- Python introuvable ou compilation C échouée
-\end{capturebox}
+
 
 \newpage
 
@@ -886,7 +911,10 @@ $ ./harden -h
 \end{lstlisting}
 
 \begin{capturebox}{cap:help}
-Affichage complet de l'aide avec \cmd{./harden -h}
+  Affichage complet de l'aide avec \cmd{./harden -h}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{-h 1.png}
+  \end{center}
 \end{capturebox}
 
 \subsection{Structure de la documentation intégrée}
@@ -909,21 +937,6 @@ Affichage complet de l'aide avec \cmd{./harden -h}
   Exemples        & 12 exemples d'utilisation couvrant tous les modes \\
 \end{tabular}
 
-\subsection{Bannière ASCII art}
-
-HARDEN affiche une bannière colorée au démarrage de chaque scan, identifiant visuellement l'outil avec sa version (codes ANSI bleu) :
-
-\begin{lstlisting}[style=bash]
-=============================================================
-HARDEN - Linux Audit, Hardening & Remediation Suite
-Version: 4.0 (14-05-2026)
-=============================================================
-\end{lstlisting}
-
-\begin{capturebox}{cap:banner}
-Bannière HARDEN affichée au démarrage du scan avec couleurs ANSI
-\end{capturebox}
-
 \subsection{Résumé de fin de scan}
 
 À la fin de chaque scan, HARDEN affiche un résumé récapitulatif indiquant le nombre d'issues critiques, d'avertissements et de messages d'information, ainsi que les 3 derniers problèmes critiques détectés.
@@ -942,7 +955,10 @@ Top critical issues:
 \end{lstlisting}
 
 \begin{capturebox}{cap:summary}
-Résumé final affiché après un scan complet avec les issues critiques détectées
+  Résumé final affiché après un scan complet avec les issues critiques détectées
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{scan couleur.png}
+  \end{center}
 \end{capturebox}
 
 \newpage
@@ -966,18 +982,18 @@ L'utilisation de helpers C compilés (\fichier{fork\_helper.c} et \fichier{threa
 
 \vspace{1cm}
 
-\begin{pointsbox}
-\begin{itemize}
-  \item \textbf{20 vérifications} dans \cmd{full\_scan} + \textbf{7} dans \cmd{quick\_scan} --- architecture modulaire \cmd{quick\_scan / full\_scan}
-  \item 4 modes d'exécution réels : normal, subshell \cmd{( full\_scan )}, \cmd{fork()} C, pthreads C
-  \item Logging simple : \cmd{echo | sed >> history.log} --- horodatage + 4 niveaux de sévérité
-  \item 6 codes d'erreur avec affichage automatique de l'aide + \cmd{exit} explicite
-  \item Helpers C dans \fichier{/tmp} --- vrais \cmd{fork()} et \cmd{pthread\_create()}, Thread split fonctionnel
-  \item Fonctionnalités bonus : baseline SHA-256, auto-remédiation, JSON, CVE kernel, banner grab
-  \item Architecture modulaire facilitant l'extension du script
-  \item Compatibilité root/non-root avec adaptation automatique des chemins de log
-\end{itemize}
-\end{pointsbox}
+% \begin{pointsbox}
+% \begin{itemize}
+%   \item \textbf{20 vérifications} dans \cmd{full\_scan} + \textbf{7} dans \cmd{quick\_scan} --- architecture modulaire \cmd{quick\_scan / full\_scan}
+%   \item 4 modes d'exécution réels : normal, subshell \cmd{( full\_scan )}, \cmd{fork()} C, pthreads C
+%   \item Logging simple : \cmd{echo | sed >> history.log} --- horodatage + 4 niveaux de sévérité
+%   \item 6 codes d'erreur avec affichage automatique de l'aide + \cmd{exit} explicite
+%   \item Helpers C dans \fichier{/tmp} --- vrais \cmd{fork()} et \cmd{pthread\_create()}, Thread split fonctionnel
+%   \item Fonctionnalités bonus : baseline SHA-256, auto-remédiation, JSON, CVE kernel, banner grab
+%   \item Architecture modulaire facilitant l'extension du script
+%   \item Compatibilité root/non-root avec adaptation automatique des chemins de log
+% \end{itemize}
+% \end{pointsbox}
 
 \vfill
 

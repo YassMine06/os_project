@@ -9,7 +9,10 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-VERSION="3.0 (2025-05-07)"
+VERSION="4.0 (2026-05-14)"
+
+# --- Variables ---
+START_TIME=$(date +%s.%N)
 
 print_header() {
     echo -e "${BLUE}=============================================================${NC}"
@@ -18,7 +21,6 @@ print_header() {
     echo -e "${BLUE}=============================================================${NC}"
 }
 
-# --- Variables ---
 PROG_NAME="harden"
 USER_NAME=$(whoami)
 DATE_FMT="+%Y-%m-%d-%H-%M-%S"
@@ -59,7 +61,12 @@ log_info() {
     [[ -n "${HARDEN_FORK_CHILD_PID:-}" ]] && fork_tag=" [FORK:PID=${HARDEN_FORK_CHILD_PID}]"
     local msg="${GREEN}$TS : $USER_NAME${fork_tag} : INFOS : $1${NC}"
     echo -e "$msg"
-    ((INFO_COUNT++))   # toujours incrémenté, y compris en dry-run
+    
+    # On n'incrémente pas le compteur si c'est un message de timing (pour garder un summary pertinent)
+    if [[ "$2" != "no_count" ]]; then
+        ((INFO_COUNT++))
+    fi
+
     if [[ $DRY_RUN -eq 0 ]]; then
         { flock -x 200; echo -e "$msg" | sed 's/\x1b\[[0-9;]*m//g' >> "$LOG_FILE"; } 200>"${LOG_FILE}.lock"
     fi
@@ -102,6 +109,19 @@ log_critical() {
         { flock -x 200; echo -e "$msg" | sed 's/\x1b\[[0-9;]*m//g' >> "$LOG_FILE"; } 200>"${LOG_FILE}.lock"
     fi
 }
+
+run_timed() {
+    local cmd="$1"
+    local start
+    start=$(date +%s.%N)
+    $cmd
+    local end
+    end=$(date +%s.%N)
+    local duration
+    duration=$(awk "BEGIN {print $end - $start}")
+    log_info "Check $cmd finished in ${duration}s" "no_count"
+}
+
 
 # ==============================================================================
 # HELP
@@ -760,15 +780,13 @@ check_docker_socket() {
 quick_scan() {
     print_header
     log_info "Starting QUICK scan on $TARGET (7 essential checks)"
-    check_suid           # Binaires SUID suspects dans $TARGET
-    check_permissions    # Fichiers world-writable dans $TARGET
-    # check_passwd         # /etc/passwd accessible en écriture
-    # check_env            # Variables dangereuses (PATH, LD_PRELOAD)
-    # check_sudo           # Permissions sudo de l'utilisateur courant
-    check_ssh            # Clés SSH exposées dans $TARGET
-    check_ssh_config     # Configuration sshd (PermitRootLogin, etc.)
+    run_timed check_suid
+    run_timed check_permissions
+    run_timed check_ssh
+    run_timed check_ssh_config
     log_info "Quick scan completed"
 }
+
 
 # --------------------------------------------------------------------------
 # full_scan : 20 checks complets --- invoqué par -C, -s, -t, -f
@@ -777,28 +795,29 @@ quick_scan() {
 full_scan() {
     print_header
     log_info "Starting FULL scan on $TARGET (20 checks)"
-    check_suid
-    check_suid_vulnerable
-    check_sudo
-    check_sudo_nopasswd
-    check_cron
-    check_cron_paths
-    check_passwd
-    check_root_users
-    check_empty_passwords
-    check_env
-    check_ssh
-    check_ssh_config
-    check_permissions
-    check_world_writable_dirs
-    check_unowned_files
-    check_writable_binaries
-    check_tmp_mounts
-    check_kernel_version
-    check_capabilities
-    check_docker_socket
+    run_timed check_suid
+    run_timed check_suid_vulnerable
+    run_timed check_sudo
+    run_timed check_sudo_nopasswd
+    run_timed check_cron
+    run_timed check_cron_paths
+    run_timed check_passwd
+    run_timed check_root_users
+    run_timed check_empty_passwords
+    run_timed check_env
+    run_timed check_ssh
+    run_timed check_ssh_config
+    run_timed check_permissions
+    run_timed check_world_writable_dirs
+    run_timed check_unowned_files
+    run_timed check_writable_binaries
+    run_timed check_tmp_mounts
+    run_timed check_kernel_version
+    run_timed check_capabilities
+    run_timed check_docker_socket
     log_info "Full scan completed"
 }
+
 
 # scan_all : alias vers full_scan (compatibilité interne, subshell, fork)
 scan_all() {
@@ -863,8 +882,8 @@ if [[ "$1" == "_real_fork_target" ]]; then
     log_info "=== FORK child PID=$$ : démarrage du scan complet sur \"$TARGET\" ==="
     print_header
     full_scan
-    print_summary
     log_info "=== FORK child PID=$$ : scan terminé sur \"$TARGET\" ==="
+    print_summary
     exit 0
 fi
 
@@ -873,17 +892,18 @@ if [[ "$1" == "_thread_part1" ]]; then
     TARGET="$2"
     print_header
     log_info "[Thread 1] Starting checks 1-11 on $TARGET"
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_suid..."; check_suid
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_suid_vulnerable..."; check_suid_vulnerable
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_sudo..."; check_sudo
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_sudo_nopasswd..."; check_sudo_nopasswd
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_cron..."; check_cron
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_cron_paths..."; check_cron_paths
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_passwd..."; check_passwd
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_root_users..."; check_root_users
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_empty_passwords..."; check_empty_passwords
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_env..."; check_env
-    echo -e "${BLUE}[THREAD 1]${NC} Executing check_ssh..."; check_ssh
+    run_timed check_suid
+    run_timed check_suid_vulnerable
+    run_timed check_sudo
+    run_timed check_sudo_nopasswd
+    run_timed check_cron
+    run_timed check_cron_paths
+    run_timed check_passwd
+    run_timed check_root_users
+    run_timed check_empty_passwords
+    run_timed check_env
+    run_timed check_ssh
+    print_summary
     exit 0
 fi
 
@@ -891,15 +911,16 @@ fi
 if [[ "$1" == "_thread_part2" ]]; then
     TARGET="$2"
     log_info "[Thread 2] Starting checks 12-20 on $TARGET"
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_ssh_config..."; check_ssh_config
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_permissions..."; check_permissions
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_world_writable_dirs..."; check_world_writable_dirs
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_unowned_files..."; check_unowned_files
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_writable_binaries..."; check_writable_binaries
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_tmp_mounts..."; check_tmp_mounts
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_kernel_version..."; check_kernel_version
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_capabilities..."; check_capabilities
-    echo -e "${CYAN}[THREAD 2]${NC} Executing check_docker_socket..."; check_docker_socket
+    run_timed check_ssh_config
+    run_timed check_permissions
+    run_timed check_world_writable_dirs
+    run_timed check_unowned_files
+    run_timed check_writable_binaries
+    run_timed check_tmp_mounts
+    run_timed check_kernel_version
+    run_timed check_capabilities
+    run_timed check_docker_socket
+    print_summary
     exit 0
 fi
 
@@ -907,13 +928,17 @@ fi
 # SUMMARY
 # ==============================================================================
 print_summary() {
-    local summary_text="SUMMARY - Critical: $CRITICAL_COUNT, Warnings: $WARNING_COUNT, Info: $INFO_COUNT"
+    local end_time=$(date +%s.%N)
+    local duration=$(awk "BEGIN {print $end_time - $START_TIME}")
+    
+    local summary_text="SUMMARY - Critical: $CRITICAL_COUNT, Warnings: $WARNING_COUNT, Info: $INFO_COUNT, Duration: ${duration}s"
     log_info "$summary_text"
 
     echo -e "\n${GREEN}=== SUMMARY ===${NC}"
     echo "Critical issues: $CRITICAL_COUNT"
     echo "Warnings: $WARNING_COUNT"
     echo "Info messages: $INFO_COUNT"
+    echo "Total duration: ${duration}s"
     echo "Log saved to: $LOG_FILE"
 
     if [[ $CRITICAL_COUNT -gt 0 && -f "$LOG_FILE" ]]; then
