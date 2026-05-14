@@ -1,7 +1,7 @@
 PWD d:\YASSMINE\Cycle\S2\Systemes d'exploitation\os projet\rapport
 INPUT C:\Users\yassm\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT d:\YASSMINE\Cycle\S2\Systemes d'exploitation\os projet\rapport\compte_rendu.tex
-OUTPUT compte_rendu.log
+INPUT d:\YASSMINE\Cycle\S2\Systemes d'exploitation\os projet\rapport\Team-B09-devoir-shell.tex
+OUTPUT Team-B09-devoir-shell.log
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
@@ -298,10 +298,10 @@ INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\lm\t1lmr.fd
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr12.tfm
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
-INPUT .\compte_rendu.aux
-INPUT .\compte_rendu.aux
-INPUT compte_rendu.aux
-OUTPUT compte_rendu.aux
+INPUT .\Team-B09-devoir-shell.aux
+INPUT .\Team-B09-devoir-shell.aux
+INPUT Team-B09-devoir-shell.aux
+OUTPUT Team-B09-devoir-shell.aux
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\microtype\mt-cmr.cfg
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\microtype\mt-cmr.cfg
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\microtype\mt-cmr.cfg
@@ -313,14 +313,14 @@ INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\epstopdf-pkg\epstop
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\00miktex\epstopdf-sys.cfg
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\00miktex\epstopdf-sys.cfg
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\00miktex\epstopdf-sys.cfg
-INPUT .\compte_rendu.out
-INPUT .\compte_rendu.out
-INPUT compte_rendu.out
-INPUT compte_rendu.out
-OUTPUT compte_rendu.pdf
-INPUT .\compte_rendu.out
-INPUT .\compte_rendu.out
-OUTPUT compte_rendu.out
+INPUT .\Team-B09-devoir-shell.out
+INPUT .\Team-B09-devoir-shell.out
+INPUT Team-B09-devoir-shell.out
+INPUT Team-B09-devoir-shell.out
+OUTPUT Team-B09-devoir-shell.pdf
+INPUT .\Team-B09-devoir-shell.out
+INPUT .\Team-B09-devoir-shell.out
+OUTPUT Team-B09-devoir-shell.out
 INPUT .\LOGO_ENSET-removebg-preview.png
 INPUT .\LOGO_ENSET-removebg-preview.png
 INPUT .\LOGO_ENSET-removebg-preview.png
@@ -393,15 +393,15 @@ INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\sym
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm10.tfm
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm10.tfm
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm7.tfm
-INPUT .\compte_rendu.toc
-INPUT .\compte_rendu.toc
-INPUT compte_rendu.toc
+INPUT .\Team-B09-devoir-shell.toc
+INPUT .\Team-B09-devoir-shell.toc
+INPUT Team-B09-devoir-shell.toc
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\lm\t1lmtt.fd
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\lm\t1lmtt.fd
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex\latex\lm\t1lmtt.fd
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmtt12.tfm
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmtk10.tfm
-OUTPUT compte_rendu.toc
+OUTPUT Team-B09-devoir-shell.toc
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr10.tfm
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx10.tfm
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri12.tfm
@@ -580,9 +580,9 @@ INPUT .\screenshoot\Résumé de fin de scan.png
 INPUT .\screenshoot\Résumé de fin de scan.png
 INPUT .\screenshoot\Résumé de fin de scan.png
 INPUT .\screenshoot\Résumé de fin de scan.png
-INPUT compte_rendu.aux
-INPUT .\compte_rendu.out
-INPUT .\compte_rendu.out
+INPUT Team-B09-devoir-shell.aux
+INPUT .\Team-B09-devoir-shell.out
+INPUT .\Team-B09-devoir-shell.out
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx10.pfb
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx10.pfb
 INPUT C:\Users\yassm\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx12.pfb

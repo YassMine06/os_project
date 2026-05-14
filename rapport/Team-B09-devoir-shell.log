@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.28)  14 MAY 2026 21:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.3.28)  14 MAY 2026 21:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"d:/YASSMINE/Cycle/S2/Systemes d'exploitation/os projet/rapport/compte_rendu.tex"
-(d:/YASSMINE/Cycle/S2/Systemes d'exploitation/os projet/rapport/compte_rendu.tex
+**"d:/YASSMINE/Cycle/S2/Systemes d'exploitation/os projet/rapport/Team-B09-devoir-shell.tex"
+(d:/YASSMINE/Cycle/S2/Systemes d'exploitation/os projet/rapport/Team-B09-devoir-shell.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -758,11 +758,11 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count370
-) (compte_rendu.aux
+) (Team-B09-devoir-shell.aux
 Package babel Info: 'french' activates 'french' shorthands.
 (babel)             Reported on input line 11.
 )
-\openout1 = `compte_rendu.aux'.
+\openout1 = `Team-B09-devoir-shell.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 210.
 LaTeX Font Info:    ... okay on input line 210.
@@ -858,9 +858,9 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 \c@lstlisting=\count377
 Package hyperref Info: Link coloring ON on input line 210.
- (compte_rendu.out) (compte_rendu.out)
+ (Team-B09-devoir-shell.out) (Team-B09-devoir-shell.out)
 \@outlinefile=\write4
-\openout4 = `compte_rendu.out'.
+\openout4 = `Team-B09-devoir-shell.out'.
 
 <LOGO_ENSET-removebg-preview.png, id=158, 786.94pt x 319.1925pt>
 File: LOGO_ENSET-removebg-preview.png Graphic file (type png)
@@ -909,7 +909,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 270.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 270.
- (compte_rendu.toc
+ (Team-B09-devoir-shell.toc
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 11.
  (C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -922,7 +922,7 @@ LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 14.
 )
 \tf@toc=\write5
-\openout5 = `compte_rendu.toc'.
+\openout5 = `Team-B09-devoir-shell.toc'.
 
  [2] [3] (C:\Users\yassm\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
@@ -1143,24 +1143,24 @@ Package pdftex.def Info: screenshoot/Résumé de fin de scan.png  used on input 
 (pdftex.def)             Requested size: 394.89658pt x 105.2799pt.
  [25 <./screenshoot/Résumé de fin de scan.png>] [26] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
-(compte_rendu.aux)
+(Team-B09-devoir-shell.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-Package rerunfilecheck Info: File `compte_rendu.out' has not changed.
+Package rerunfilecheck Info: File `Team-B09-devoir-shell.out' has not changed.
 (rerunfilecheck)             Checksum: 2D41A6CE56B2F56CBE60FBB7962E5FF1;7090.
  ) 
 Here is how much of TeX's memory you used:
  32800 strings out of 467867
- 631259 string characters out of 5418334
- 1390996 words of memory out of 5000000
+ 631484 string characters out of 5418334
+ 1391023 words of memory out of 5000000
  60819 multiletter control sequences out of 15000+600000
  710017 words of font info for 174 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 116i,13n,121p,1266b,2142s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,13n,121p,1275b,2142s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtko10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/yassm/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
-Output written on compte_rendu.pdf (26 pages, 3019630 bytes).
+Output written on Team-B09-devoir-shell.pdf (26 pages, 3019630 bytes).
 PDF statistics:
  602 PDF objects out of 1000 (max. 8388607)
  175 named destinations out of 1000 (max. 500000)
